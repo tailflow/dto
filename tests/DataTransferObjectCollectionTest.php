@@ -8,10 +8,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Address;
-use Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Addresses;
+use Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\AddressesCollection;
 use Tailflow\DataTransferObjects\Tests\Fixtures\App\Models\User;
 
-class CastableDataTransferObjectCollectionTest extends TestCase
+class DataTransferObjectCollectionTest extends TestCase
 {
     /** @test */
     public function it_casts_arrays_to_json(): void
@@ -22,12 +22,12 @@ class CastableDataTransferObjectCollectionTest extends TestCase
                     [
                         'country' => 'jp',
                         'city' => 'Tokyo',
-                        'street' => '4-2-8 Shiba-koen'
+                        'street' => '4-2-8 Shiba-koen',
                     ],
                     [
                         'country' => 'jp',
                         'city' => 'Tokyo',
-                        'street' => '5-2-0 Ueno-koen'
+                        'street' => '5-2-0 Ueno-koen',
                     ],
                 ],
             ]
@@ -50,25 +50,27 @@ class CastableDataTransferObjectCollectionTest extends TestCase
         );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_casts_data_transfer_objects_to_json(): void
     {
         User::factory()->create(
             [
-                'delivery_addresses' => new Addresses(
+                'delivery_addresses' => new AddressesCollection(
                     [
                         new Address(
                             [
                                 'country' => 'jp',
                                 'city' => 'Tokyo',
-                                'street' => '4-2-8 Shiba-koen'
+                                'street' => '4-2-8 Shiba-koen',
                             ]
                         ),
                         new Address(
                             [
                                 'country' => 'jp',
                                 'city' => 'Tokyo',
-                                'street' => '5-2-0 Ueno-koen'
+                                'street' => '5-2-0 Ueno-koen',
                             ]
                         ),
                     ]
@@ -102,12 +104,12 @@ class CastableDataTransferObjectCollectionTest extends TestCase
                     [
                         'country' => 'jp',
                         'city' => 'Tokyo',
-                        'street' => '4-2-8 Shiba-koen'
+                        'street' => '4-2-8 Shiba-koen',
                     ],
                     [
                         'country' => 'jp',
                         'city' => 'Tokyo',
-                        'street' => '5-2-0 Ueno-koen'
+                        'street' => '5-2-0 Ueno-koen',
                     ],
                 ],
             ]
@@ -124,22 +126,6 @@ class CastableDataTransferObjectCollectionTest extends TestCase
         self::assertEquals('jp', $user->delivery_addresses[1]->country);
         self::assertEquals('Tokyo', $user->delivery_addresses[1]->city);
         self::assertEquals('5-2-0 Ueno-koen', $user->delivery_addresses[1]->street);
-    }
-
-    /** @test */
-    public function it_throws_exceptions_for_incorrect_data_structures(): void
-    {
-        $this->expectExceptionMessage(
-            'Cannot assign null to property Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Address::$country of type string'
-        );
-
-        User::factory()->create(
-            [
-                'delivery_addresses' => [
-                    ['bad' => 'thing'],
-                ],
-            ]
-        );
     }
 
     /** @test */

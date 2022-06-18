@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects;
 
-use Tailflow\DataTransferObjects\CastableDataTransferObject;
+use Illuminate\Validation\Rule;
+use Tailflow\DataTransferObjects\DataTransferObject;
 
-class Address extends CastableDataTransferObject
+class Address extends DataTransferObject
 {
     public string $country;
     public string $city;
     public string $street;
+
+    public function rules(): array
+    {
+        return [
+            'country' => [Rule::in(['jp', 'ca'])],
+        ];
+    }
 }

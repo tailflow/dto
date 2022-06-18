@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tailflow\DataTransferObjects\Tests;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Address;
-use Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Addresses;
 use Tailflow\DataTransferObjects\Tests\Fixtures\App\Models\User;
 
-class CastableDataTransferObjectTest extends TestCase
+class DataTransferObjectTest extends TestCase
 {
     /** @test */
     public function it_casts_arrays_to_json(): void
@@ -35,7 +34,9 @@ class CastableDataTransferObjectTest extends TestCase
         );
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function it_casts_data_transfer_objects_to_json(): void
     {
         User::factory()->create(
@@ -82,22 +83,6 @@ class CastableDataTransferObjectTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_exceptions_for_incorrect_data_structures(): void
-    {
-        $this->expectExceptionMessage(
-            'Cannot assign null to property Tailflow\DataTransferObjects\Tests\Fixtures\App\DataTransferObjects\Address::$country of type string'
-        );
-
-        User::factory()->create(
-            [
-                'work_address' => [
-                    'bad' => 'thing',
-                ],
-            ]
-        );
-    }
-
-    /** @test */
     public function it_rejects_invalid_types(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -118,4 +103,6 @@ class CastableDataTransferObjectTest extends TestCase
 
         self::assertNull($user->refresh()->work_address);
     }
+
+
 }

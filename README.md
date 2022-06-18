@@ -1,11 +1,9 @@
-# Laravel Castable Data Transfer Object
+# Laravel Data Transfer Object
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/tailflow/castable-dto.svg)](https://packagist.org/packages/tailflow/castable-dto)
-[![Build Status on Travis CI](https://img.shields.io/github/workflow/status/tailflow/castable-dto/default)](https://github.com/tailflow/castable-dto/actions)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/tailflow/dto.svg)](https://packagist.org/packages/tailflow/dto)
+[![Build Status on GitHub Action](https://img.shields.io/github/workflow/status/tailflow/dto/default)](https://github.com/tailflow/dto/actions)
 
-Have you ever wanted to cast your JSON columns to a value object?
-
-This package gives you an extended version of Spatie's `DataTransferObject` class, called `CastableDataTransferObject`.
+A simple and lightweight implementation of Data Transfer Objects in Laravel with optional casting support.
 
 Under the hood it implements Laravel's [`Castable`](https://laravel.com/docs/8.x/eloquent-mutators#castables) interface with a Laravel [custom cast](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) that handles serializing between the `DataTransferObject` (or a compatible array) and your JSON database column.
 
@@ -14,21 +12,20 @@ Under the hood it implements Laravel's [`Castable`](https://laravel.com/docs/8.x
 You can install the package via composer:
 
 ```bash
-composer require tailflow/castable-dto
+composer require tailflow/dto
 ```
 
 ## Usage
 
-### 1. Create your `CastableDataTransferObject`
+### 1. Create your `DataTransferObject`
 
-Check out the readme for Spatie's [data transfer object](https://github.com/spatie/data-transfer-object) package to find out more about what their `DataTransferObject` class can do.
 
 ``` php
 namespace App\DataTansferObjects;
 
-use Tailflow\DataTransferObjects\CastableDataTransferObject;
+use Tailflow\DataTransferObjects\DataTransferObject;
 
-class Address extends CastableDataTransferObject
+class Address extends DataTransferObject
 {
     public string $country;
     public string $city;
@@ -36,7 +33,7 @@ class Address extends CastableDataTransferObject
 }
 ```
 
-### 2. Configure your Eloquent attribute to cast to it:
+### (Optional) 2. Configure your Eloquent attribute casting:
 
 Note that this should be a `jsonb` or `json` column in your database schema.
 
@@ -54,7 +51,36 @@ class User extends Model
 }
 ```
 
-And that's it! You can now pass either an instance of your `Address` class, or even just an array with a compatible structure. It will automatically be cast between your class and JSON for storage and the data will be validated on the way in and out.
+### 3. Enjoy ~
+
+Pass DTOs as arguments or use as return values, and get a nice autocompletion.
+
+```php
+function getAddress(Address $originalAddress): Address 
+{
+    $address = new Address();
+    $address->county = $originalAddress->country;
+    $address->city = 'Tokyo';
+    $address->street = '4-2-8 Shiba-koen';
+  
+    return $address;
+}
+
+// or
+
+function getAddress(): Address 
+{
+    return new Address(
+        [
+            'country' => 'Japan',
+            'city' => 'Tokyo',
+            'street' => '4-2-8 Shiba-koen',
+        ]
+    );
+}
+```
+
+On Eloquent models, you can now pass either an instance of your `Address` class, or even just an array with a compatible structure. It will automatically be cast between your class and JSON for storage and the data will be validated on the way in and out.
 
 ```php
 $user = User::create([
@@ -82,10 +108,6 @@ $user->address->calculateDistance($otherUser->address);
 
 echo (string) $user->address;
 ```
-
-## Credits
-
-- Original [package](https://github.com/jessarcher/laravel-castable-data-transfer-object) by [Jess Archer](https://github.com/jessarcher)
 
 ## License
 

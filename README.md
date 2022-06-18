@@ -17,11 +17,11 @@ composer require tailflow/dto
 
 ## Usage
 
-### 1. Create your `DataTransferObject`
+### 1. Create your `DataTransferObject` or `DataTransferObjectCollection`
 
 
-``` php
-namespace App\DataTansferObjects;
+```php
+namespace App\DataTransferObjects;
 
 use Tailflow\DataTransferObjects\DataTransferObject;
 
@@ -33,6 +33,20 @@ class Address extends DataTransferObject
 }
 ```
 
+```php
+namespace App\DataTransferObjects;
+
+use Tailflow\DataTransferObjects\DataTransferObjectCollection;
+
+class WorkAddresses extends DataTransferObjectCollection 
+{
+    public static function getItemClass(): string
+    {
+        return Address::class;
+    }
+}
+```
+
 ### (Optional) 2. Configure your Eloquent attribute casting:
 
 Note that this should be a `jsonb` or `json` column in your database schema.
@@ -41,12 +55,14 @@ Note that this should be a `jsonb` or `json` column in your database schema.
 namespace App\Models;
 
 use App\DataTansferObjects\Address;
+use App\DataTansferObjects\WorkAddresses;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
     protected $casts = [
         'address' => Address::class,
+        'work_addresses' => WorkAddresses::class,
     ];
 }
 ```
@@ -83,6 +99,10 @@ function getAddress(): Address
 On Eloquent models, you can now pass either an instance of your `Address` class, or even just an array with a compatible structure. It will automatically be cast between your class and JSON for storage and the data will be validated on the way in and out.
 
 ```php
+$workAddress = new Address();
+$workAddress->country = 'Japan';
+$workAddress->city = 'Osaka';
+
 $user = User::create([
     // ...
     'address' => [
@@ -90,6 +110,10 @@ $user = User::create([
         'city' => 'Tokyo',
         'street' => '4-2-8 Shiba-koen',
     ],
+    'work_addresses' => [
+        $workAddress
+    ]
+
 ]);
 
 $residents = User::where('address->city', 'Tokyo')->get();

@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tailflow/dto.svg)](https://packagist.org/packages/tailflow/dto)
 [![Build Status on GitHub Action](https://img.shields.io/github/workflow/status/tailflow/dto/default)](https://github.com/tailflow/dto/actions)
 
-A simple and lightweight implementation of Data Transfer Objects in Laravel with optional casting support.
+A simple and lightweight implementation of Data Transfer Objects (DTO) in Laravel with optional casting support.
 
 Under the hood it implements Laravel's [`Castable`](https://laravel.com/docs/8.x/eloquent-mutators#castables) interface with a Laravel [custom cast](https://laravel.com/docs/7.x/eloquent-mutators#custom-casts) that handles serializing between the `DataTransferObject` (or a compatible array) and your JSON database column.
 

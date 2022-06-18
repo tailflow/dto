@@ -1,15 +1,15 @@
 {
   "name": "tailflow/dto",
   "keywords": [
-    "tailflow",
     "laravel data transfer object",
     "laravel castable data transfer object",
     "laravel castable value object",
     "laravel castable dto",
-    "laravel value object"
+    "laravel value object",
+    "tailflow"
   ],
   "homepage": "https://github.com/tailflow/dto",
-  "description": "Automatically cast JSON columns to PHP objects in Laravel using Spatie's data-transfer-object class",
+  "description": "A simple and lightweight implementation of Data Transfer Objects (DTO) in Laravel with optional casting support.",
   "type": "library",
   "license": "MIT",
   "authors": [

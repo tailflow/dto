@@ -1,7 +1,7 @@
 # Laravel Data Transfer Object
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tailflow/dto.svg)](https://packagist.org/packages/tailflow/dto)
-[![Build Status on GitHub Action](https://img.shields.io/github/workflow/status/tailflow/dto/default)](https://github.com/tailflow/dto/actions)
+[![Build Status on GitHub Actions](https://img.shields.io/github/actions/workflow/status/tailflow/dto/ci.yml?branch=main)](https://github.com/tailflow/dto/actions)
 
 A simple and lightweight implementation of Data Transfer Objects (DTO) in Laravel with optional casting support.
 

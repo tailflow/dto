@@ -33,4 +33,9 @@ abstract class DataTransferObjectCollection extends Collection implements Castab
     {
         return new DataTransferObjectCollectionCast(static::class);
     }
+
+    public function toArray()
+    {
+        return array_map(fn(DataTransferObject $dto) => $dto->toArray(), parent::toArray());
+    }
 }

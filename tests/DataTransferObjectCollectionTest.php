@@ -149,4 +149,40 @@ class DataTransferObjectCollectionTest extends TestCase
 
         self::assertNull($user->refresh()->address);
     }
+
+    /** @test */
+    public function it_converts_underlying_dto_objects_to_array(): void
+    {
+        $user = User::factory()->create(
+            [
+                'delivery_addresses' => [
+                    [
+                        'country' => 'jp',
+                        'city' => 'Tokyo',
+                        'street' => '4-2-8 Shiba-koen',
+                    ],
+                    [
+                        'country' => 'jp',
+                        'city' => 'Tokyo',
+                        'street' => '5-2-0 Ueno-koen',
+                    ],
+                ],
+            ]
+        );
+
+        $arrayRepresentation = $user->delivery_addresses->toArray();
+
+        self::assertSame([
+            [
+                'country' => 'jp',
+                'city' => 'Tokyo',
+                'street' => '4-2-8 Shiba-koen',
+            ],
+            [
+                'country' => 'jp',
+                'city' => 'Tokyo',
+                'street' => '5-2-0 Ueno-koen',
+            ],
+        ], $arrayRepresentation);
+    }
 }
